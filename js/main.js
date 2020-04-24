@@ -1,16 +1,23 @@
 
 // ----- Global Variables -->
-   var gearPattern = document.getElementById("gear-pattern")
-   var innerPattern = document.getElementById("inner-pattern")
+ 
    var iris = document.getElementById("iris")
    var body = document.getElementById("body")
 
    var earRight = document.getElementById("ear-right")
    var earLeft = document.getElementById("ear-left");
 
+
+   // Eye
+   var gearPattern = document.getElementById("gear-pattern");
+   var innerPattern = document.getElementById("inner-pattern");
+   // Button IDs
    var centerButton = document.getElementById("center-button")
-   var innerRing = document.getElementById("inner-ring")
+   var innerButtonRing = document.getElementById("inner-button-ring")
    var innerButtonPattern = document.getElementById("inner-button-pattern")
+   var outerButtonPattern = document.getElementById("outer-button-pattern")
+   var buttonBase = document.getElementById("button-base")
+   var whiteInnerButtonRing = document.getElementById("white-inner-button-ring");
 
    // gear1_rotation = gsap.getProperty("#gear1", "rotation");
 
