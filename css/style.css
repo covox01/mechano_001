@@ -1,0 +1,13 @@
+/* ----- General Element Styles ----- */
+
+#outer-ring {
+   position: absolute;
+}
+
+#body {
+   position: relative;
+}
+
+svg {
+   position: relative;
+}
