@@ -2,22 +2,21 @@
 // ----- Global Variables -->
    // Body
    var screen = document.getElementById("screen")
-   var iris = document.getElementById("iris")
    var body = document.getElementById("body")
-   var earRight = document.getElementById("ear-right")
-   var earLeft = document.getElementById("ear-left");
-   var earDotRight = document.getElementById("ear-dot-right");
-   var earDotLeft = document.getElementById("ear-dot-left");
+   var armRight = document.getElementById("arm-right")
+   var armLeft = document.getElementById("arm-left");
+   var armDotRight = document.getElementById("arm-dot-right");
+   var armDotLeft = document.getElementById("arm-dot-left");
    var detailLine = document.getElementById("detail-line");
 
-
    // Eye
+   var iris = document.getElementById("iris");
    var gearOne = document.getElementById("gear-one")
    var gearPattern = document.getElementById("gear-pattern");
    var innerPattern = document.getElementById("inner-pattern");
    var innerIrisRing = document.getElementById("inner-iris-ring");
    var outerRing = document.getElementById("outer-ring")
-
+   var buttonRing = document.getElementById("button-ring")
 
    // Button IDs
    var centerButton = document.getElementById("center-button")
@@ -26,89 +25,140 @@
    var outerButtonPattern = document.getElementById("outer-button-pattern")
    var buttonBase = document.getElementById("button-base")
    var whiteInnerButtonRing = document.getElementById("white-inner-button-ring");
-
-   // gear1_rotation = gsap.getProperty("#gear1", "rotation");
-
-// ----- Banner Animation Frames -->
-
-	//-- Frame 1 -->
-
-		function gear1_animation() {
-         var tl = new TimelineMax({ id: "frame 1", repeat: -1, yoyo: true });
-			tl
-				.to(["#gear1"], 2.5, {ease: Back.easeInOut, rotation: 360}, "sync")
-				.to(["#gear1"], 2, {ease: Back.easeInOut, y: 20}, "sync")
-				.to(["#gear1"], 2, {ease: Back.easeInOut, y: 20}, "sync")
-				
-			return tl
-      }
-
-      function gear2_animation() {
-         var tl = new TimelineMax({ id: "frame 2", repeat: -1, yoyo: true });
-			tl
-				.to(["#gear2"], 2.5, {ease: Back.easeInOut, rotation: 180}, "sync")
-				// .to(["#gear2"], 2, {ease: Power4.easeInOut, y: 20}, "sync")
-				// .to(["#gear2"], 2, {ease: Power4.easeInOut, y: 20}, "sync")
-				// .to(["#gear1"], .5, {ease: Linear.easeNone, x: 50, repeat: -1},)
-				
-			return tl
-      }
+   var button = document.getElementById("button")
 
 // Master Timeline -->
    function intro_bodyAnimation(){
-      var bodyTL = new TimelineMax({id: "intro body"})
-      bodyTL
-         .to(body, .7, {y: -50, ease: Back.easeInOut.config(5)})
-         .to(body, .25, {y: 0, ease: Back.easeInOut}, "-=.2")
+      var tl = new TimelineMax({id: "intro body"})
+      tl
+         .to(body, .7, { y: -50, ease: Back.easeInOut.config(5)})
+         .to(body, .4, { y: 0, ease: Back.easeOut.config(3)}, "-=.2")
 
-      return bodyTL
+      return tl
    }
 
    function intro_irisAnimation(){
-      var irisTL = new TimelineMax({id: "intro gear 1"})
-      irisTL
+      var tl = new TimelineMax({id: "intro iris animation"})
+      tl
          .to(gearOne, .7, {y: 20, ease: Back.easeInOut})
-         .to(gearOne, .25, {y: 120, ease: Power2.easeInOut}, "-=.2")
-         .to(gearOne, .5, {y: 0, ease: Power3.easeOut})
+         .to(gearOne, .25, {y: 80, ease: Power2.easeInOut}, "-=.2")
+         .to(gearOne, .3, {y: 0, ease: Back.easeOut.config(2)})
 
-      return irisTL
+      return tl
    }
+
+   function intro_buttonAnimation() {
+      var tl = new TimelineMax({id: "intro button"})
+      tl
+         .to(button, .5, {y: 0, ease: Power3.easeOut, opacity: 1})
+         .to(button, .3, {scale: 1, ease: Back.easeOut.config(3), opacity: 1}, "-=.3sync")
+         .from(buttonRing, .5, {scale: .5, ease: Power3.easeOut, transformOrigin: "center center"}, "-=.3sync")
+
+      return tl
+   }
+
+   function intro_arms(){
+      var tl = new TimelineMax({ id: "intro button"});
+      tl
+         .to(armRight, .2, {x:0, ease: Power2.easeInOut }, "sync")
+         .to(armLeft, .2, {x: 0, ease: Power2.easeInOut }, "sync")
+
+         .to(armRight, .3, {y:-30, ease: Power2.easeInOut }, "-=.1sync")
+         .to(armLeft, .3, {y:-30, ease: Power2.easeInOut }, "-=.1sync")
+
+         .to(armRight, .3, {y: 0, ease: Back.easeOut.config(3) }, "sync2")
+         .to(armLeft, .3, {y: 0, ease: Back.easeOut.config(3) }, "sync2")
+
+         .to(armDotLeft, .3, {y: -120, ease: Power3.easeInOut}, "sync3")
+         .to(armDotRight, .3, {y: 120, ease: Power3.easeInOut}, "sync3")
+         .to(armDotLeft, .3, {y: -60, ease: Power3.easeInOut}, "sync4")
+         .to(armDotRight, .3, {y: 60, ease: Power3.easeInOut}, "sync4")
+
+         .to(iris, .4, {scale: 1.4}, "sync5")
+         .to(armDotLeft, .2, {y: 0, ease: Power3.easeInOut}, "sync5")
+         .to(armDotRight, .2, {y: 120, ease: Power3.easeInOut}, "sync5")
+         .to(armRight, .4, {y: 20, ease: Power3.easeOut}, "sync5")
+         .to(armLeft, .4, {y: 20, ease: Power3.easeOut}, "sync5")
+         .to(armRight, .2, {y: 0, ease: Power3.easeOut}, "sync6-=.2")
+         .to(armLeft, .2, {y: 0, ease: Power3.easeOut}, "sync6-=.2")
+
+      return tl;
+   }
+
+    function intro_iris_animation() {
+      var tl = new TimelineMax({ id: "iris" });
+      tl
+         .from(iris, 0.2, { scale: .7, ease: Power2.easeInOut, transformOrigin: "center center" }, "sync")
+         .to(iris, .2, {fill: "url(#iris_1_)"}, "sync")
+
+      return tl;
+   }
+
+   // function intro_gear_animation(){
+
+   // }
+
+
    
 	function introAnimation(){  
-      var tl = new TimelineMax({delay: 1})
+      var tl = new TimelineMax({})
       tl
-         .add(intro_bodyAnimation) 
-         .add(intro_irisAnimation)
+         .add(intro_bodyAnimation(), "sync") 
+         .add(intro_irisAnimation(), "sync")
+         .add(intro_buttonAnimation(), "-=.4")
+         .add(intro_arms(), "-=.5")
+         .add(intro_iris_animation(), "-=.3")
+         // .add(intro_gear_animation())
 
-      GSDevTools.create();
+
+         // GSDevTools.create();
+         return tl
 	}
 	
 // ----- Init -->
 
-	function init() {
-      introAnimation()
+   function setup(){
+      var tl = new TimelineMax({})
+      tl
+      // Body
+         .set(armRight, {x: -15, force3D: false, rotation: 0.01})
+         .set(armLeft, {x: 15, force3D: false, rotation: 0.01})
+         .set(detailLine, {scale: .3, transformOrigin: "center center", force3D: false, rotation: 0.01, opacity: 0})
 
-   // Body
-      gsap.set(earRight, {x: -15})
-      gsap.set(earLeft, {x: 15})
-      gsap.set(detailLine, {scale: .3, transformOrigin: "center center", opacity: 0})
+      // Eye
+         .set(gearOne, {y: 43, transformOrigin: "center center", force3D: false, rotation: 0.01})
+         .set(iris, { transformOrigin: "center center", force3D: false, rotation: 0.01, fill: "url(#iris_2_)"})
+         .set(gearPattern, {scale: .5, transformOrigin: "center center", force3D: false, rotation: 0.01, opacity: 0})
+         .set(innerPattern, {scale: .6, transformOrigin: "center center", force3D: false, rotation: 0.01, opacity: 0})
+         .set(outerRing, {scale: .45, transformOrigin: "center center", force3D: false, rotation: 0.01})
 
-   // Eye
-      gsap.set(gearOne, {y: 43, transformOrigin: "center center"})
-      gsap.set(iris, {scale: .3, transformOrigin: "center center", fill: "black"})
-      gsap.set(gearPattern, {scale: .3, transformOrigin: "center center", opacity: 0})
-      gsap.set(innerPattern, {scale: .6, transformOrigin: "center center", opacity: 0})
-      gsap.set(outerRing, {scale: .45, transformOrigin: "center center"})
-
-   // Button
-      gsap.set(button, {y: -150, scale: .9, opacity: 0, transformOrigin: "center center"})
-      gsap.set(outerButtonPattern, {scale: .7, transformOrigin: "center center", opacity: 0})
-      gsap.set(innerButtonPattern, {scale: .7, transformOrigin: "center center", opacity: 0})
-      gsap.set(whiteInnerButtonRing, {scale: .85, transformOrigin: "center center", opacity: 1})
-      gsap.set(buttonBase, {scale: .7, transformOrigin: "center center"})
+      // Button
+         .set(button, {y: -150, scale: .8, opacity: 0, transformOrigin: "center center", force3D: false, rotation: 0.01})
+         .set(outerButtonPattern, {scale: .7, transformOrigin: "center center", force3D: false, rotation: 0.01, opacity: 0})
+         .set(innerButtonPattern, {scale: .7, transformOrigin: "center center", force3D: false, rotation: 0.01, opacity: 0})
+         .set(whiteInnerButtonRing, {scale: .85, transformOrigin: "center center", force3D: false, rotation: 0.01, opacity: 1})
+         .set(buttonBase, {scale: .7, transformOrigin: "center center", force3D: false, rotation: 0.01})
+         .set("*", {visibility: "visible"})
+         .to(body, .5, {opacity: 1, force3D: false, rotation: 0.01})
+         .add(introAnimation())
    }
+
+	function init() {
+      TweenMax.set(body, {opacity: 0, onComplete: setup})
+   }
+
+   document.addEventListener("DOMContentLoaded", function(event) {
+      // wait until window is loaded - meaning all images, stylesheets, js, fonts, media assets, and links
+      window.addEventListener("load", function(e) {
+
+            // run all GSAP code here
+               init();
+
+   }, false);
+});
+
+
    
-   init()
 
 
 // 
