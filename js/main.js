@@ -3,6 +3,7 @@
    // Body
    var screen = document.getElementById("screen")
    var body = document.getElementById("body")
+   var chasis = document.getElementById("chasis");
    var armRight = document.getElementById("arm-right")
    var armLeft = document.getElementById("arm-left");
    var armDotRight = document.getElementById("arm-dot-right");
@@ -152,7 +153,8 @@
 
          // GSDevTools.create();
          return tl
-	}
+   }
+   
 	
 // ----- Init -->
 
@@ -167,7 +169,7 @@
       // Eye
          .set(gearOne, {y: 43, transformOrigin: "center center", force3D: false, rotation: 0.01})
          .set(iris, { transformOrigin: "center center", force3D: false, rotation: 0.01, fill: "url(#iris_2_)"})
-         .set(gearPattern, {scale: .5, transformOrigin: "center center", force3D: false, rotation: 0.01, opacity: 0})
+         .set(gearPattern, { scale: .5, transformOrigin: "center center", force3D: false, rotation: 0.01, opacity: 0})
          .set(innerPattern, {scale: .6, transformOrigin: "center center", force3D: false, rotation: 0.01, opacity: 0})
          .set(outerRing, {scale: .45, transformOrigin: "center center", force3D: false, rotation: 0.01})
 
@@ -179,11 +181,23 @@
          .set(buttonBase, {scale: .7, transformOrigin: "center center", force3D: false, rotation: 0.01})
          .set("*", {visibility: "visible"})
          .to(body, .5, {opacity: 1, force3D: false, rotation: 0.01})
-         .add(introAnimation())
+         .to([outerRing, gearPattern], 1, {opacity: 1, rotation: 20, scale: .7, ease: Power2.easeInOut, yoyo: true, repeat: -1, transformOrigin: "center center"})
+         // .add(introAnimation())
+
+      
+   }
+
+   function chasisHover(){
+      var tl = new TimelineMax({repeat: -1})
+      tl.to(body, 1, {y: 10, ease: Linear.easeNone, transformOrigin: "center center"})
+         .to(body, 1,{y: 0, ease: Linear.easeNone})
+         // .to(body, 1,{y: 10, ease: Linear.easeNone})
+         // .to(body, .5,{y: 0, ease: Linear.easeNone,})
    }
 
 	function init() {
       TweenMax.set(body, {opacity: 0, onComplete: setup})
+      chasis.addEventListener("mouseenter",  chasisHover)
    }
 
    document.addEventListener("DOMContentLoaded", function(event) {
