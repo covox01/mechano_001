@@ -53,12 +53,13 @@
          .to(button, .5, {y: 0, ease: Power3.easeOut, opacity: 1})
          .to(button, .3, {scale: 1, ease: Back.easeOut.config(3), opacity: 1}, "-=.3sync")
          .from(buttonRing, .5, {scale: .5, ease: Power3.easeOut, transformOrigin: "center center"}, "-=.3sync")
+         .to(detailLine, .3, {opacity: 1, scale: 1, ease: Power3.easeOut}, "-=.4")
 
       return tl
    }
 
    function intro_arms(){
-      var tl = new TimelineMax({ id: "intro button"});
+      var tl = new TimelineMax({ id: "intro arms"});
       tl
          .to(armRight, .2, {x:0, ease: Power2.easeInOut }, "sync")
          .to(armLeft, .2, {x: 0, ease: Power2.easeInOut }, "sync")
@@ -74,29 +75,46 @@
          .to(armDotLeft, .3, {y: -60, ease: Power3.easeInOut}, "sync4")
          .to(armDotRight, .3, {y: 60, ease: Power3.easeInOut}, "sync4")
 
-         .to(iris, .4, {scale: 1.4}, "sync5")
+         // .to(iris, .4, {scale: 1.4}, "sync5")
          .to(armDotLeft, .2, {y: 0, ease: Power3.easeInOut}, "sync5")
          .to(armDotRight, .2, {y: 120, ease: Power3.easeInOut}, "sync5")
          .to(armRight, .4, {y: 20, ease: Power3.easeOut}, "sync5")
          .to(armLeft, .4, {y: 20, ease: Power3.easeOut}, "sync5")
-         .to(armRight, .2, {y: 0, ease: Power3.easeOut}, "sync6-=.2")
-         .to(armLeft, .2, {y: 0, ease: Power3.easeOut}, "sync6-=.2")
+         .to(armRight, .2, {y: 0, ease: Back.easeOut.config(4)}, "sync6-=.2")
+         .to(armLeft, .2, {y: 0, ease: Back.easeOut.config(4)}, "sync6-=.2")
 
       return tl;
    }
 
-    function intro_iris_animation() {
+    function intro_irisAnimation2() {
       var tl = new TimelineMax({ id: "iris" });
       tl
-         .from(iris, 0.2, { scale: .7, ease: Power2.easeInOut, transformOrigin: "center center" }, "sync")
-         .to(iris, .2, {fill: "url(#iris_1_)"}, "sync")
+         .set(iris, {fill: "url(#iris_1_)", opacity: 1})
+         .to(iris, 0.2, {scale: 1.3, ease: Power3.easeInOut, transformOrigin: "center center", opacity: 1})
+         // .to("#iris_1_", .51, {opacity: 1}, "sync+=.2")
 
       return tl;
    }
 
-   // function intro_gear_animation(){
+    function outerRing_animation() {
+      var tl = new TimelineMax({id: "outer ring animation"})
+      tl
+         .to(outerRing, .45, {scale: 1,  ease: Back.easeOut}, "sync")
+         .to(gearPattern, .45, {scale: 1, opacity: 1, ease: Power3.easeOut}, "sync")
+         .to(innerPattern, .25, {scale: 1, opacity: 1, ease: Power3.easeOut}, "sync")
+         .to(iris, .2, {scale: 1}, "-=.2")
+         
+      return tl;
+    }
 
-   // }
+    function outerRing_animationSpin (){
+      var tl = new TimelineMax({id: "outer ring spin"})
+      tl
+         // .to(gearPattern, 25, {rotation: 360, ease: Linear.easeNone, repeat: -1}, "sync")
+         .to(innerPattern, 40, {rotation: -360, ease: Linear.easeNone, repeat: -1}, "sync")
+      
+      return tl
+    }
 
 
    
@@ -106,9 +124,10 @@
          .add(intro_bodyAnimation(), "sync") 
          .add(intro_irisAnimation(), "sync")
          .add(intro_buttonAnimation(), "-=.4")
-         .add(intro_arms(), "-=.5")
-         .add(intro_iris_animation(), "-=.3")
-         // .add(intro_gear_animation())
+         .add(intro_arms(), "-=.2")
+         .add(intro_irisAnimation2(), "-=.3")
+         .add(outerRing_animation(), "-=.2")
+         .add(outerRing_animationSpin(), "-=.2")
 
 
          // GSDevTools.create();
@@ -152,7 +171,7 @@
       window.addEventListener("load", function(e) {
 
             // run all GSAP code here
-               init();
+               setup();
 
    }, false);
 });
