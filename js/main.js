@@ -180,24 +180,85 @@
          .set(whiteInnerButtonRing, {scale: .85, transformOrigin: "center center", force3D: false, rotation: 0.01, opacity: 1})
          .set(buttonBase, {scale: .7, transformOrigin: "center center", force3D: false, rotation: 0.01})
          .set("*", {visibility: "visible"})
-         .to(body, .5, {opacity: 1, force3D: false, rotation: 0.01})
-         .to([outerRing, gearPattern], 1, {opacity: 1, rotation: 20, scale: .7, ease: Power2.easeInOut, yoyo: true, repeat: -1, transformOrigin: "center center"})
+         .to(chasis, .5, {opacity: 1, force3D: false, rotation: 0.01})
+         // .to([outerRing, gearPattern], 1, {opacity: 1, rotation: 20, scale: .7, ease: Power2.easeInOut, yoyo: true, repeat: -1, transformOrigin: "center center"})
          // .add(introAnimation())
 
       
    }
 
+  
+
    function chasisHover(){
-      var tl = new TimelineMax({repeat: -1})
-      tl.to(body, 1, {y: 10, ease: Linear.easeNone, transformOrigin: "center center"})
-         .to(body, 1,{y: 0, ease: Linear.easeNone})
-         // .to(body, 1,{y: 10, ease: Linear.easeNone})
-         // .to(body, .5,{y: 0, ease: Linear.easeNone,})
+      //  var hoverTL = new TimelineMax({ repeat: -1 });
+      // TweenMax.to(chasis, .2, {y: 0})
+      // chasis.addEventListener("mouseenter", e => {
+      //    hoverTL
+      //       .to(chasis, 1, {y: 10, ease: Linear.easeNone, transformOrigin: "center center"})
+      //       .to(chasis, 1,{y: 0, ease: Linear.easeNone})
+      //       console.log("mouse enter")
+      // }) 
+      // chasis.addEventListener("mouseout", e => {
+      //    hoverTL
+      //       .kill()
+      //       .to(chasis, 1, {y: 0, ease: Linear.easeNone, transformOrigin: "center center"})
+      //       console.log("mouse <output></output>")
+      // })
+
+
+      chasis.addEventListener("mouseenter", hoverOn)
+      chasis.addEventListener("mouseleave", hoverOut)
+      chasis.addEventListener("mousedown", mouseClick)
+   }
+
+   var hoverTL = new TimelineMax()
+   var hoverOutTL = new TimelineMax()
+
+   function mouseClick(){
+      introAnimation()
+      console.log("clicked")
+      chasis.removeEventListener("mouseenter", hoverOn, false)
+      chasis.removeEventListener("mouseleave", hoverOut, false);
+      hoverTL.kill()
+      hoverOutTL.kill()
+   }
+   function hoverOn(e){
+      e.preventDefault();
+      // hoverOutTL.kill()
+      // hoverTL.kill()
+      //  hoverTL
+      //    .set(chasis, {immediateRedner: false, y: 0})
+      //    .to(chasis, 1, {y: 30, ease: Power2.easeInOut, transformOrigin: "center center"})
+      //    .to(chasis, 1,{y: 0, ease: Power2.easeInOut})
+      //    console.log("mouse on")
+        
+      // return hoverTL
+      //  TweenMax.to(chasis, 1, {y: -10, ease: Power2.easeInOut, repeat: -1, yoyo: true})
+      // TweenMax.to(chasis, 1, {y: 30, ease: Power2.easeInOut, repeat: -1, yoyo: true})
+      TweenMax.to([outerRing, gearPattern], 1, {opacity: 1, rotation: 20, scale: .7, ease: Power2.easeInOut, yoyo: true, repeat: -1, transformOrigin: "center center"})
+      // TweenMax.to(chasis, 1, { y: 0, delay: .5});
+   }
+
+   function hoverOut(e){
+       e.preventDefault();
+      // hoverTL.kill()
+      // hoverOutTL.kill()
+      //  hoverOutTL
+         // .to(chasis, 1, {y: 10, ease: Linear.easeNone, transformOrigin: "center center"})
+         // .to(chasis, 1,{y: 0, ease: Linear.easeNone})
+         // .set(chasis, {y: 0})
+         TweenMax.to(chasis, 1, {immediateRender: false, y: 0, ease:Power2.easeInOut, transformOrigin: "center center"})
+         TweenMax.to([outerRing, gearPattern], 1, { scale: .5, rotation: 0, ease: Power2.easeInOut, transformOrigin: "center center"})
+         TweenMax.to([gearPattern], 1, { opacity: 0, scale: .5, rotation: 0, ease: Power2.easeInOut, transformOrigin: "center center"})
+         console.log("mouse out")
+      
+      return hoverOutTL
    }
 
 	function init() {
-      TweenMax.set(body, {opacity: 0, onComplete: setup})
-      chasis.addEventListener("mouseenter",  chasisHover)
+      TweenMax.set(chasis, {opacity: 0, onComplete: setup})
+      chasisHover()
+     
    }
 
    document.addEventListener("DOMContentLoaded", function(event) {
