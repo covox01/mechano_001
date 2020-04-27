@@ -201,20 +201,20 @@
    }
 
    function restartIntro(){
-      initRingSpinTL.play()
-      hoverTL.play()
-      hoverOutTL.play()
-      addEventListeners()
+      
    }
 
    function resetAnimation(){
       chasis.removeEventListener("mousedown", resetAnimation, false)
+      chasis.setAttribute("id", "removeCursor")
       var tl = new TimelineMax({onComplete: restartIntro})
       tl
          .add(resetChasis(), "sync")
          .add(resetIris(), "sync")
          .add(resetButton(), "sync+=.2")
          .add(resetArms(), "sync")  
+
+      
    }
 
 //   -------------- Initial State of Elements and Animations ----------------- >
