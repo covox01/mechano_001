@@ -126,8 +126,8 @@
    function outerButtonRing_animationSpin (){
       var tl = new TimelineMax({id: "outer button ring spin"})
       tl
-         .to(outerButtonPattern, 10, {rotation: 360, ease: Linear.easeNone, repeat: -1}, "sync")
-         .to(innerButtonPattern, 10, {rotation: -360, ease: Linear.easeNone, repeat: -1}, "sync")
+         .to(outerButtonPattern, 10, {rotation:-360, ease: Linear.easeNone, repeat: -1}, "sync")
+         .to(innerButtonPattern, 10, {rotation: 360, ease: Linear.easeNone, repeat: -1}, "sync")
       
       return tl
    }
@@ -161,7 +161,6 @@
          return tl
    }
    
-
 // ----- Init -->
 
    function setup(){
@@ -192,11 +191,9 @@
 
    function initRingSpin(){
       initRingSpinTL
-         .to([outerRing], 1, {opacity: 1, scale: .54, ease: Power2.easeInOut, transformOrigin: "center center", repeat: -1, yoyo: true}, "sync")
+         .to([outerRing], 1, {opacity: 1, scale: .6, ease: Power2.easeInOut, transformOrigin: "center center", repeat: -1, yoyo: true}, "sync")
          .to(gearPattern, 1, { scale: .6, ease: Power2.easeInOut, repeat: -1, yoyo: true, transformOrigin: "center center"}, "sync")
          .to(innerIrisRing, 1, {scale: .9, ease: Power2.easeInOut, repeat: -1, yoyo: true}, "sync")
-
-      // TweenMax.to(gearPattern, 20, {rotation: 360, ease: Linear.easeNone, repeat: -1})
    }
 
 //   Event Handlers that will trigger Hover, Hover Out, and Click events that will have different animations
@@ -234,7 +231,7 @@
       return hoverTL
    }
 
-// When mouse hover off the chasis, the iris rings will resume in it's timeline and continue looping
+//    When mouse hover off the chasis, the iris rings will resume in it's timeline and continue looping
    function hoverOut(e){
       e.preventDefault();
       TweenMax.to(iris, .2, {scale: .2 });
