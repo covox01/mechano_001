@@ -28,14 +28,15 @@
    var whiteInnerButtonRing = document.getElementById("white-inner-button-ring");
    var button = document.getElementById("button")
 
-   // Timelines
+// ----- Global Timelines ----->
    var hoverTL = new TimelineMax({});
    var hoverSpinTL = new TimelineMax({});
    var hoverOutTL = new TimelineMax({});
    var setupTL = new TimelineMax({});
    var initRingSpinTL = new TimelineMax({})
 
-// Master Timeline -->
+
+// --------------- Intro Animation  -->
    function intro_bodyAnimation(){
       var tl = new TimelineMax({id: "intro body"})
       tl
@@ -71,13 +72,8 @@
       tl
          .to(armRight, .2, {x:0, ease: Power2.easeInOut }, "sync")
          .to(armLeft, .2, {x: 0, ease: Power2.easeInOut }, "sync")
-
-         .to(armRight, .3, {y:-30, ease: Power2.easeInOut }, "-=.1sync")
-         .to(armLeft, .3, {y:-30, ease: Power2.easeInOut }, "-=.1sync")
-
-         .to(armRight, .3, {y: 0, ease: Back.easeOut.config(2) }, "sync2")
-         .to(armLeft, .3, {y: 0, ease: Back.easeOut.config(2) }, "sync2")
-
+         .to([armRight, armLeft], .3, {y:-30, ease: Power2.easeInOut })
+         .to([armRight, armLeft], .3, {y: 0, ease: Back.easeOut.config(2) })
          .to(armDotLeft, .3, {y: -120, ease: Power3.easeInOut}, "sync4-=.1")
          .to(armDotRight, .3, {y: 120, ease: Power3.easeInOut}, "sync4-=.1")
 
@@ -85,7 +81,7 @@
    }
 
    function intro_irisAnimation2() {
-   var tl = new TimelineMax({ id: "iris" });
+      var tl = new TimelineMax({ id: "iris" });
    tl
       .set(iris, {fill: "url(#iris_1_)", opacity: 1})
       .to(iris, 0.2, {scale: 1.3, ease: Power3.easeInOut, transformOrigin: "center center", opacity: 1})
@@ -94,18 +90,18 @@
    }
 
    function outerRing_animation() {
-   var tl = new TimelineMax({id: "outer ring animation"})
+      var tl = new TimelineMax({id: "outer ring animation"})
       tl
          .to(outerRing, .45, {scale: 1,  ease: Back.easeOut}, "sync")
          .to(gearPattern, .45, {scale: 1, opacity: 1, ease: Power3.easeOut}, "sync")
          .to(innerPattern, .25, {scale: 1, opacity: 1, ease: Power3.easeOut}, "sync")
-         .to(iris, .2, {scale: 1}, "-=.2")
+         .to(iris, .2, {scale: 1, onComplete: addPostActivationListeners}, "-=.2")
          
       return tl;
    }
 
    function outerButtonRing_animation() {
-   var tl = new TimelineMax({id: "outer button ring animation"})
+      var tl = new TimelineMax({id: "outer button ring animation"})
       tl
          .to([outerButtonPattern, buttonBase], .45, {scale: 1,  ease: Back.easeOut, opacity: 1}, "sync")
          .to(innerButtonPattern, .25, {scale: 1, opacity: 1, ease: Power3.easeOut}, "sync")
@@ -115,7 +111,7 @@
    }
 
    function outerRing_animationSpin (){
-   var tl = new TimelineMax({id: "outer ring spin"})
+      var tl = new TimelineMax({id: "outer ring spin"})
       tl
          .to(gearPattern, 20, {rotation: 360, ease: Linear.easeNone, repeat: -1}, "sync")
          .to(innerPattern, 40, {rotation: -360, ease: Linear.easeNone, repeat: -1}, "sync")
@@ -137,9 +133,10 @@
       tl
          .to(armDotLeft, 2, {y: 0, ease: Power3.easeInOut}, "sync")
          .to(armDotRight, 2, {y:  0, ease: Power3.easeInOut}, "sync")
-      
+
       return tl
    }
+// ----- Intro animation master timeline ----->
 
 	function introAnimation(){  
       var tl = new TimelineMax({})
@@ -160,11 +157,130 @@
          // GSDevTools.create();
          return tl
    }
-   
-// ----- Init -->
 
+// ------ Animation Reset Functions ----->
+
+   function resetIris(){
+      var tl = new TimelineMax()
+      tl
+         .to(gearOne, .7, {y: 45, ease: Back.easeInOut}, "sync")
+         .to([gearPattern, outerRing], .5, {scale: .5, rotation: "+=100", ease: Power2.easeInOut}, "sync")
+         .to(innerPattern, .5, {scale: .7, opacity: 0, ease: Power2.easeInOut}, "sync")
+         .to(iris, .5, {opacity: 0, scale: .3, fill: "url(#iris_2_)", ease: Power2.easeInOut}, "sync")
+         .to(iris, .5, {opacity: 1, scale: 1, ease: Back.easeInOut}, "-=.3")
+
+      return tl
+   }
+
+   function resetButton(){
+      var tl = new TimelineMax()
+      tl
+         .to([outerButtonPattern, innerButtonPattern, buttonBase, whiteInnerButtonRing], .5, {scale: .7}, "sync")
+         .to(button, .5, {opacity: 0, y: -140, ease: Back.easeInOut.config(3), scale: .8}, "sync")
+         .to(detailLine, .5, {scale: .5, opacity: 0})
+
+      return tl
+   }
+
+   function resetArms(){
+      var tl = new TimelineMax()
+      tl
+         .to(armLeft, .5, {x: 30, ease: Back.easeInOut.config(3)}, "sync")
+         .to(armRight, .5, {x: -30, ease: Back.easeInOut.config(3)}, "sync")
+
+      return tl
+   }
+
+   function resetChasis(){
+      var tl = new TimelineMax()
+      tl
+         .to(chasis, .5, {scale: 1.1, ease: Back.easeInOut.config(5)})
+         .to(chasis, .5, {scale: 1, ease: Back.easeInOut}, "-=.2")
+
+      return tl
+   }
+
+   function restartIntro(){
+      initRingSpinTL.play()
+      hoverTL.play()
+      hoverOutTL.play()
+      addEventListeners()
+   }
+
+   function resetAnimation(){
+      chasis.removeEventListener("mousedown", resetAnimation, false)
+      var tl = new TimelineMax({onComplete: restartIntro})
+      tl
+         .add(resetChasis(), "sync")
+         .add(resetIris(), "sync")
+         .add(resetButton(), "sync+=.2")
+         .add(resetArms(), "sync")  
+   }
+
+//   -------------- Initial State of Elements and Animations ----------------- >
+
+
+//   Event Handlers that will trigger Hover, Hover Out, and Click events that will have different animations
+   function addEventListeners(){
+      chasis.addEventListener("mouseenter", hoverOn)
+      chasis.addEventListener("mouseleave", hoverOut)
+      chasis.addEventListener("mousedown", activateRobot)
+   }
+//   After the click event activates, a new click event is added to reset the animation
+   function addPostActivationListeners(){
+      chasis.addEventListener("mousedown", resetAnimation)
+   }
+
+//   Mouse Click will remove all intro event handlers to prevent users from clicking the element needlessly
+   function activateRobot(){
+      // Activates the animation for the intro
+      introAnimation()
+      // Removes the previous event listeners
+      chasis.removeEventListener("mouseenter", hoverOn, false)
+      chasis.removeEventListener("mouseleave", hoverOut, false);
+      chasis.removeEventListener("mousedown", activateRobot, false);
+      // Resets animated elements before the intro animation kicks in
+      TweenMax.to([outerRing, gearPattern], .5, { scale: .5, rotation: 0, ease: Power2.easeInOut, transformOrigin: "center center"})
+      TweenMax.to([gearPattern], .5, { opacity: 0, scale: .5, rotation: 0, ease: Power2.easeInOut, transformOrigin: "center center"})
+      TweenMax.to(iris, 0.2, { scale: 0.2 });
+      TweenMax.set(iris, { fill: "url(#iris_2_)", delay: 0.2 });
+      TweenMax.to(iris, 0.2, { scale: 1, opacity: 1, delay: 0.3 });
+      TweenMax.to(chasis, .2, {scale: 1})
+      // Kills previous timelines to ensure elements on the intro animation don't conflict with the previous ones
+      hoverTL.pause()
+      hoverOutTL.pause()
+      initRingSpinTL.pause()
+       console.log("clicked");
+   }
+
+//    When the user hovers over the chasis, the iris rings will pause
+   function hoverOn(e){
+      e.preventDefault();
+      TweenMax.to(iris, .2, {scale: .2 });
+      TweenMax.set(iris, {fill: "url(#iris_1_)", delay: .2});
+      TweenMax.to(iris, 0.2, { scale: 1.2, opacity: 1, delay: .3});
+      TweenMax.to(chasis, .7, {scale: 1.1, ease: Back.easeInOut.config(5), transformOrigin: "center center"})
+      return hoverTL
+   }
+
+//    When mouse hover off the chasis, the iris rings will resume in it's timeline and continue looping
+   function hoverOut(e){
+      e.preventDefault();
+      TweenMax.to(iris, .2, {scale: .2 });
+      TweenMax.set(iris, {fill: "url(#iris_2_)", delay: .2});
+      TweenMax.to(iris, 0.5, { scale: 1, opacity: 1, delay: .3});
+      TweenMax.to(chasis, 0.5, { scale: 1, ease: Back.easeInOut.config(5), transformOrigin: "center center" });
+   }
+
+   function initRingSpin(){
+      initRingSpinTL
+         .to([outerRing], 1, {opacity: 1, scale: .6, ease: Power2.easeInOut, transformOrigin: "center center", repeat: -1, yoyo: true}, "sync")
+         .to(gearPattern, 1, { scale: .6, ease: Power2.easeInOut, repeat: -1, yoyo: true, transformOrigin: "center center"}, "sync")
+         .to(innerIrisRing, 1, {scale: .9, ease: Power2.easeInOut, repeat: -1, yoyo: true}, "sync")
+   }
+
+   // ----- Init setup of all elements before being interacted with -->
    function setup(){
-     
       setupTL
       // Body
          .set(armRight, {x: -15, force3D: false, rotation: 0.01})
@@ -189,60 +305,11 @@
          .to(chasis, .5, {opacity: 1, force3D: false, rotation: 0.01, onComplete: initRingSpin})
    }
 
-   function initRingSpin(){
-      initRingSpinTL
-         .to([outerRing], 1, {opacity: 1, scale: .6, ease: Power2.easeInOut, transformOrigin: "center center", repeat: -1, yoyo: true}, "sync")
-         .to(gearPattern, 1, { scale: .6, ease: Power2.easeInOut, repeat: -1, yoyo: true, transformOrigin: "center center"}, "sync")
-         .to(innerIrisRing, 1, {scale: .9, ease: Power2.easeInOut, repeat: -1, yoyo: true}, "sync")
-   }
-
-//   Event Handlers that will trigger Hover, Hover Out, and Click events that will have different animations
-   function chasisHover(){
-      chasis.addEventListener("mouseenter", hoverOn)
-      chasis.addEventListener("mouseleave", hoverOut)
-      chasis.addEventListener("mousedown", mouseClick)
-   }
-
-//   Mouse Click will remove all intro event handlers to prevent users from clicking the element needlessly
-   function mouseClick(){
-      introAnimation()
-      console.log("clicked")
-      chasis.removeEventListener("mouseenter", hoverOn, false)
-      chasis.removeEventListener("mouseleave", hoverOut, false);
-      chasis.removeEventListener("mousedown", mouseClick, false);
-      TweenMax.to([outerRing, gearPattern], .5, { scale: .5, rotation: 0, ease: Power2.easeInOut, transformOrigin: "center center"})
-      TweenMax.to([gearPattern], .5, { opacity: 0, scale: .5, rotation: 0, ease: Power2.easeInOut, transformOrigin: "center center"})
-      TweenMax.to(iris, 0.2, { scale: 0.2 });
-      TweenMax.set(iris, { fill: "url(#iris_2_)", delay: 0.2 });
-      TweenMax.to(iris, 0.2, { scale: 1, opacity: 1, delay: 0.3 });
-      TweenMax.to(chasis, .2, {scale: 1})
-      hoverTL.kill()
-      hoverOutTL.kill()
-      initRingSpinTL.kill()
-   }
-
-//    When the user hovers over the chasis, the iris rings will pause
-   function hoverOn(e){
-      e.preventDefault();
-      TweenMax.to(iris, .2, {scale: .2 });
-      TweenMax.set(iris, {fill: "url(#iris_1_)", delay: .2});
-      TweenMax.to(iris, 0.2, { scale: 1.2, opacity: 1, delay: .3});
-      TweenMax.to(chasis, .7, {scale: 1.1, ease: Back.easeInOut.config(5), transformOrigin: "center center"})
-      return hoverTL
-   }
-
-//    When mouse hover off the chasis, the iris rings will resume in it's timeline and continue looping
-   function hoverOut(e){
-      e.preventDefault();
-      TweenMax.to(iris, .2, {scale: .2 });
-      TweenMax.set(iris, {fill: "url(#iris_2_)", delay: .2});
-      TweenMax.to(iris, 0.5, { scale: 1, opacity: 1, delay: .3});
-      TweenMax.to(chasis, 0.5, { scale: 1, ease: Back.easeInOut.config(5), transformOrigin: "center center" });
-   }
+   // Init activates the setup once the chasis is at a 0 opacity
 
 	function init() {
       TweenMax.set(chasis, {opacity: 0, onComplete: setup})
-      chasisHover()
+      addEventListeners()
    }
 
    document.addEventListener("DOMContentLoaded", function(event) {
